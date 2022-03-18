@@ -61,6 +61,12 @@ namespace Assignment_3
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (System.Text.RegularExpressions.Regex.IsMatch(textBox1.Text, "[^0-9]")|| System.Text.RegularExpressions.Regex.IsMatch(textBox4.Text, "[^0-9]"))
+            {
+                MessageBox.Show("Please enter only numbers in ID and Age .");
+                 textBox1.Clear();
+                textBox4.Clear();   
+            }
 
 
             if (textBox1.Text == "" || textBox2.Text == "" || textBox3.Text == "" || textBox4.Text == "")
@@ -115,7 +121,7 @@ namespace Assignment_3
             if (count >= list.Count())
                 MessageBox.Show("last element in file");
             else
-            textBox5.Text = list[count].ToString().Replace("|", " ") + list.Count.ToString();
+            textBox5.Text = list[count].ToString().Replace("|", " ") ;
             count++;
 
 
