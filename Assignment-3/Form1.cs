@@ -45,22 +45,24 @@ namespace Assignment_3
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 path = openFileDialog1.FileName;
+                isEnabled(path);
+                fileStream = new FileStream(path, FileMode.OpenOrCreate,FileAccess.ReadWrite,FileShare.None);
+
+                streamReader = new StreamReader(fileStream);
+                String Line;
+                while ((Line = streamReader.ReadLine()) != null)
+                    list.Add(Line);
+                streamReader.Close();
 
             }
-            isEnabled(path);
-            fileStream = new FileStream(path, FileMode.OpenOrCreate);
-            streamWriter = new StreamWriter(fileStream);
-            streamReader = new StreamReader(fileStream);
-            String Line;
-            while ((Line = streamReader.ReadLine()) != null)
-                list.Add(Line);
-            streamReader.Close();
+           
 
 
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            
             if (System.Text.RegularExpressions.Regex.IsMatch(textBox1.Text, "[^0-9]")|| System.Text.RegularExpressions.Regex.IsMatch(textBox4.Text, "[^0-9]"))
             {
                 MessageBox.Show("Please enter only numbers in ID and Age .");
@@ -69,12 +71,15 @@ namespace Assignment_3
             }
 
 
-            if (textBox1.Text == "" || textBox2.Text == "" || textBox3.Text == "" || textBox4.Text == "")
+           else if (textBox1.Text == "" || textBox2.Text == "" || textBox3.Text == "" || textBox4.Text == "")
             {
                 MessageBox.Show("please enter all data");
             }
             else
             {
+                fileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+
+                streamWriter = new StreamWriter(fileStream);
                 fileStream.Seek(0, SeekOrigin.End);
                 streamWriter.WriteLine(textBox1.Text + '|' + textBox2.Text + '|' + textBox3.Text + '|' + textBox4.Text);
                 streamWriter.Flush();
@@ -103,14 +108,15 @@ namespace Assignment_3
             button4.Enabled = false;
             button5.Enabled = false;
             streamWriter.Close();
-            streamReader.Close();
             fileStream.Close();
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
 
-            streamReader = new StreamReader(fileStream);
+            streamReader = new StreamReader(path);
+            textBox5.Text = streamReader.ReadToEnd();
+
 
             streamReader.Close();
         }
